@@ -1,0 +1,107 @@
+extends ./common
+
+block content
+ .container
+  div#info.border.border-dark.mt-2.p-2.mt-3.d-inline-block 
+   div=`Ngày: ${date}`
+   button.btn.btn-primary.mt-2(onclick="getLocation();") Vị trí
+  div#demo
+  div.d-flex.mt-5.mb-5
+   h5.mr-3=`CheckList vận hành ${listDetail[0].ten_danh_muc}`
+   input.w-25#nameChild.form-control(type='text', placeholder='Tên tủ điện')
+
+  table.table.mb-5
+   th Nội dung
+   th Tiêu chuẩn
+   th Cách kiểm tra
+   th Check
+   each detail in listDetail
+    tr
+     td=detail.noi_dung
+     td.font-italic=detail.tieu_chuan
+     td.font-italic=detail.cach_kiem_tra
+     td
+      .form-check
+       input.Check.form-check-input(type='checkbox', value='' onclick='hide(this.id)' name="1" id=`chitiet${detail.id}`)
+       label.form-check-label(for='Check1') Đạt
+      .form-check
+       input.Check.form-check-input(type='checkbox', value='' onclick='hide(this.id)' name="0" id=`chitiet${detail.id}`)
+       label.form-check-label(for='Check2') Không đạt
+
+  button.btn.btn-primary.mb-5(id='save') SAVE
+  form(style="display:none;"  action=`/CheckList/${listDetail[0].ma_danh_muc}` method="POST" id="formResult")
+   input(name='result' id='result') 
+   input(name='idDanhMuc' value=`${listDetail[0].ma_danh_muc}` )
+   input(name='nameChild' id='name') 
+   input(name='vitri' id='vitri') 
+
+ script.
+  var toado = false; 
+  var saveBtn=document.getElementById('save'); 
+  saveBtn.addEventListener('click',function(){
+    var value=[];
+    var x = document.querySelectorAll(".Check");
+    var nameChild = document.getElementById("nameChild");
+    console.log(nameChild);
+    x.forEach(function(i){
+    if(i.checked){
+    value.push(i.name);
+    }
+    });
+    var check=document.querySelectorAll("tr").length-1;
+    if(value.length !==check) {
+    alert("Vui lòng check đủ thông tin ");
+    return;
+   }else if(!nameChild.value){
+    alert("Vui lòng điền tên tủ điện");
+    return;
+   }else if(toado==false){
+     alert("Vui lòng click vào nút vị trí để tiếp tục ");
+     return;
+   } else{
+    alert("Gửi thành công");
+    var inputResult = document.getElementById("result");
+    var name = document.getElementById("name");
+    inputResult.value = value;
+    name.value=nameChild.value;
+    var formResult = document.getElementById("formResult");
+    formResult.submit();
+   }
+    
+
+   });
+    
+   function hide(id){
+   var inputCheck = document.querySelectorAll(`#${id}`);
+   var x=inputCheck[0];
+   var y=inputCheck[1];
+    if(x.checked){
+    y.disabled=true;
+    }
+    else if(y.checked) x.disabled=true;
+    else {
+    	x.disabled=false;
+    	y.disabled=false;
+    	}
+
+   }
+    
+    function getLocation() {
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+    alert("Geolocation is not supported by this browser.");
+   }
+   }
+
+   function showPosition(position) {
+     toado=true;
+    var q = `Vĩ độ-Kinh độ : ${position.coords.latitude},${position.coords.longitude}`;
+    var vitri = document.getElementById("vitri");
+    console.log(q);
+    vitri.value=q;
+    //- z.innerHTML = "Latitude: " + position.coords.latitude +
+    //- "<br>Longitude: " + position.coords.longitude;
+   }
+
+    

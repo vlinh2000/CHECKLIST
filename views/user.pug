@@ -1,0 +1,78 @@
+extends ./common
+
+block content
+ .container.mt-5
+  .row
+   .col-6
+    if status
+     .alert.alert-success(role="alert")=status
+    if fail
+     .alert.alert-danger(role="alert")=fail
+    p
+     a.btn.btn-primary(data-toggle='collapse', href='#collapseExample', role='button', aria-expanded='false', aria-controls='collapseExample') Tạo User
+ 
+    #collapseExample.collapse
+     form(action="/user" method="POST").w-50
+      .form-group
+       input.form-control(type='text' placeholder="Tài khoản" name='username')
+       input.mt-2.mb-2.form-control(type='text' placeholder="Mật khẩu" name='pass' )
+       input.form-control(type='text' placeholder="Họ Tên" name='name' )
+      button.btn.btn-primary(type='submit') Tạo
+   .col-6
+    #collapseExample1.collapse
+     form(action="/user/update" method="POST").w-50
+      .form-group
+       input.form-control(type='text' placeholder="Tài khoản" name='username' id='fixUser')
+       input.mt-2.mb-2.form-control(type='text' placeholder="Mật khẩu" name='pass')
+       input.form-control(type='text' placeholder="Họ Tên" name='name' id='fixname')
+      button.btn.btn-primary(type='submit') Update
+  table.table.mt-2
+   th Tên tài khoản
+   th Mật khẩu
+   th Họ Tên
+   th Chỉnh sửa
+   if listUser
+    each user in listUser
+     tr
+      td=user.user_name
+      td=user.pass_word
+      td=user.hoten
+      td.d-flex
+       a(data-toggle='collapse', href='#collapseExample1', role='button', aria-expanded='false', aria-controls='collapseExample' onclick=`update(this.id)` id=user.user_name) 
+        i.mr-4.zmdi.zmdi-brush
+       i.zmdi.zmdi-close.text-danger(id=user.user_name+'?' onclick='deleteUser(this.id)')
+
+  form(action='/user/delete' method="POST" id="deForm")
+   input(name='username' style="display:none" id = 'deInput') 
+
+  script.
+   if(window.history.replaceState){
+        window.history.replaceState( null, null, window.location.href );
+      }
+   function update(username){
+     var info = document.getElementById(username);
+     var td =info.parentNode
+     var tdUsername =td.parentNode.firstChild.innerHTML;
+     var tdHoten = td.previousSibling.innerHTML;
+     
+     var username = document.getElementById('fixUser');
+     var name = document.getElementById('fixname');
+     username.value=tdUsername;
+     name.value = tdHoten;
+   }
+   function deleteUser(username){
+   var checkAd= username.split("?");
+   console.log(checkAd);
+     if(checkAd[0]=='admin'){
+      alert("Không thể xóa User Admin");
+      return;
+     }else{
+     if(confirm('Are you sure to delete?')){
+     var deInput = document.getElementById('deInput');
+     deInput.value = username;
+     var deForm = document.getElementById('deForm');
+     deForm.submit();
+    }
+     }
+     
+   }

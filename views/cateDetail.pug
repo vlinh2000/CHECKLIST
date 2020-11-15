@@ -1,0 +1,26 @@
+extends ./common
+
+block content
+ .container
+  table.table.mt-5
+   if listChild[0].ten_danh_muc
+   th=`Tên các ${listChild[0].ten_danh_muc}`
+   th Chi tiết
+   each child in listChild
+    tr
+     td#name=child.nameChild
+     td
+      a(href=`/${idDM}/${child.nameChild}`) view
+
+  form(action=`/${listChild[0].ma_danh_muc}` method = "POST" id="exportEx" style="display:none")
+   input(id="contentEx" name="nameChild")
+  button#submit.mt-5.btn.btn-primary EXPORT TO EXCEL
+
+
+ script.
+  var btn = document.getElementById("submit");
+  btn.addEventListener('click',function(){
+    var form = document.getElementById("exportEx");
+    form.submit();
+
+  })

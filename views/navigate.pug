@@ -1,0 +1,66 @@
+extends ./common
+
+block content
+  .container.mt-5(id='main')
+   .row
+    .col-4
+     if errs
+      .alert.alert-danger(class="w-75")=errs
+     if status
+      .alert.alert-success(class="w-75")=status
+     form(class="w-75" action='/' method="POST" id='form')
+      .form-group
+       label(for='username') UserName
+       input#username(name="username", type="text" , class="form-control" , value=values ? values.username : "" )
+      .form-group
+       label(for="password") Password
+       input#password(name='password', type="password" , class="form-control", value=values?values.password: "")
+      .form-group( id="update" style="display:none")
+       input#checkUpdate.mr-2(type='checkbox', name='checkUpdate' , value="false" checked)
+       label(for='vehicle1')  update
+      button.btn.btn-primary(id="btnCreate") Create
+      button.btn.btn-primary.mt-2(id="btnUpdate" style="display:none;") Update
+    .col-8
+     form.form-inline.my-2.my-lg-0.d-flex.justify-content-end(action='/search')
+      input.form-control.mr-sm-2(type='search', placeholder='Search', aria-label='Search' name="q")
+      button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+
+     h5=`Danh sách User đã check list hôm nay`
+     table.table
+      th Tên User
+      each user in listUser
+       tr
+        td=user.user_name
+
+      
+  script.
+    function showBtnUpdate(){
+    var btnUpdate =document.getElementById("btnUpdate");
+    var inputUser = document.getElementById("username");
+    var checkBoxUpdate = document.getElementById("update");
+    var btnCreate = document.getElementById("btnCreate");
+    var checkUpdate = document.getElementById("checkUpdate");
+    checkUpdate.value='true';
+    btnCreate.style.display="none";
+    checkBoxUpdate.style.display="block";
+    btnUpdate.style.display = 'block';
+
+    }
+
+    function closeBtnUpdate(){
+    var btnUpdate =document.getElementById("btnUpdate");
+    btnUpdate.style.display = 'none';
+    }
+
+
+
+   
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+extends ./common
+
+block content
+ .container-fluid#info
+  div(style="border:1px solid black; padding:5px;display:inline-block;").mt-5
+   p=`Mã số: ${listChild[0].nameChild}`
+   p=`Vị trí: ${listChild[0].vitri}`
+   p=`Ngày: ${date}`
+
+  p.text-right.mt-3=`Ca 1 : ${listChild[0].thoi_diem}`
+  table.table.mb-5
+   th Nội dung kiểm tra
+   th Tiêu chuẩn
+   th Cách thức kiểm tra
+   th Đạt 
+   th Không đạt
+   each child in listChild
+    tr
+     td=child.noi_dung
+     td=child.tieu_chuan
+     td=child.cach_kiem_tra
+     if child.ketqua == '1'
+      td 
+       i.zmdi.zmdi-check-circle.text-primary
+      td
+     if child.ketqua == '0'
+      td 
+      td 
+       i.zmdi.zmdi-check-circle.text-primary
+  p.text-break.mb-5.text-right=`Họ tên : ${listChild[0].user_name}`
+
+  
+
+
+
+     

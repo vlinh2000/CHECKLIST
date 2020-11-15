@@ -1,0 +1,49 @@
+extends ./common
+
+block content
+  .container.mt-5(id='main')
+     a.mb-5.btn.btn-primary(href="/user") Quản lí user
+     h5=`Danh mục đã check hôm nay`
+     table.table
+      th Tên danh mục
+      th số lần check
+      th Chi tiết
+      each cate in listCate
+       tr
+        td=cate.ten_danh_muc
+        td=cate.solan
+        td
+         a(href=`/${cate.ma_danh_muc}`) view
+
+      
+  script.
+    function showBtnUpdate(){
+    var btnUpdate =document.getElementById("btnUpdate");
+    var inputUser = document.getElementById("username");
+    var checkBoxUpdate = document.getElementById("update");
+    var btnCreate = document.getElementById("btnCreate");
+    var checkUpdate = document.getElementById("checkUpdate");
+    checkUpdate.value='true';
+    btnCreate.style.display="none";
+    checkBoxUpdate.style.display="block";
+    btnUpdate.style.display = 'block';
+
+    }
+
+    function closeBtnUpdate(){
+    var btnUpdate =document.getElementById("btnUpdate");
+    btnUpdate.style.display = 'none';
+    }
+
+
+
+   
+
+
+
+
+
+
+
+
+

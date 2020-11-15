@@ -1,0 +1,59 @@
+extends ./common
+
+block content
+  .container-fluid.mt-5
+   .row
+    .col-2
+      button.btn.btn-primary.d-block.mb-2(id="mau1" onclick="showMau();") Mẫu 
+    .col-10#viewMain  
+
+     h5.mt-5=`Danh mục Checklist vận hành`
+     p#date.mb-5.text-primary='Hôm nay : '+ date
+     table.table#checkbox.mb-5
+       th Nội dung kiểm tra
+       th Tần suất kiểm tra
+       th Nơi lưu trữ
+       th Check
+       if listDM
+        each danhmuc in listDM
+         tr 
+         td=danhmuc.ten_danh_muc
+         td=danhmuc.tan_suat_kt
+         td=danhmuc.noi_luu_tru
+         td 
+          a(href=`/checklist/${danhmuc.ma_danh_muc}`)
+           i.zmdi.zmdi-edit
+
+
+
+  .div#forms(style="display:none")
+    i.d-flex.justify-content-end.zmdi.zmdi-close.zmdi-hc-3x.text-danger.mr-0(onclick='closeForm()' style="cursor:pointer;")
+    #carouselExampleControls.carousel.slide.w-75.m-auto(data-ride='carousel')
+     .carousel-inner
+      .carousel-item.active
+        img.d-block.w-100(src='/file/mainpage.PNG', alt='mainpage')
+      .carousel-item
+        iframe.d-block.w-100(src='/file/form.pdf', alt='form' scrolling="no" style="width: 100%;height: 100%;border: none")
+      .carousel-item
+        img.d-block.w-100(src='/file/thongtin.PNG', alt='thongtin')
+     a.carousel-control-prev(href='#carouselExampleControls', role='button', data-slide='prev')
+      span.carousel-control-prev-icon(aria-hidden='false')
+     a.carousel-control-next(href='#carouselExampleControls', role='button', data-slide='next')
+      span.carousel-control-next-icon(aria-hidden='false')
+    
+  
+  script.
+   function showMau(){
+   var forms=document.getElementById('forms');
+   var viewMain=document.getElementById('viewMain');
+   forms.style.display='block';
+   viewMain.style.display='none';
+   }
+   function closeForm(){
+   var forms=document.getElementById('forms');
+   var viewMain=document.getElementById('viewMain');
+   forms.style.display='none';
+   viewMain.style.display='block'
+
+   }
+  
